@@ -13,9 +13,11 @@ import java.util.List;
 public class QuizServiceImpl implements QuizService {
 
     private final QuizRepository quizRepository;
+    private final com.quizapp.repository.QuestionRepository questionRepository;
 
-    public QuizServiceImpl(QuizRepository quizRepository) {
+    public QuizServiceImpl(QuizRepository quizRepository, com.quizapp.repository.QuestionRepository questionRepository) {
         this.quizRepository = quizRepository;
+        this.questionRepository = questionRepository;
     }
 
     @Override
@@ -42,6 +44,22 @@ public class QuizServiceImpl implements QuizService {
 
     private QuizResponse toResponse(Quiz quiz) {
         return new QuizResponse(quiz.getId(), quiz.getTitle(), quiz.getDescription(), quiz.getCreatedAt());
+    }
+
+    @Override
+    public com.quizapp.dto.QuizResponseDTO getQuiz(Long id) {
+        Quiz quiz = quizRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Quiz not found with id: " + id));
+
+        java.util.List<com.quizapp.entity.Question> questions = questionRepository.findByQuizId(id);
+
+        com.quizapp.dto.QuizResponseDTO response = new com.quizapp.dto.QuizResponseDTO();
+        response.setId(quiz.getId());
+        response.setTitle(quiz.getTitle());
+        response.setDescription(quiz.getDescription());
+        response.setQuestions(questions);
+
+        return response;
     }
 }
 

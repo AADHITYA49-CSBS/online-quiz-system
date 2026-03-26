@@ -10,5 +10,7 @@ public interface QuizService {
     QuizResponse createQuiz(CreateQuizRequest request);
 
     List<QuizResponse> getAllQuizzes();
+
+    com.quizapp.dto.QuizResponseDTO getQuiz(Long id);
 }
 

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.springframework.web.bind.annotation.PathVariable;
 import java.util.List;
 
 @RestController
@@ -32,6 +33,11 @@ public class QuizController {
     @GetMapping
     public ResponseEntity<List<QuizResponse>> getAllQuizzes() {
         return ResponseEntity.ok(quizService.getAllQuizzes());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<com.quizapp.dto.QuizResponseDTO> getQuiz(@PathVariable Long id) {
+        return ResponseEntity.ok(quizService.getQuiz(id));
     }
 }
 
